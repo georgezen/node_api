@@ -124,13 +124,26 @@ const authUser = async (req, res) => {
         const user = {
             nombre
         }
-        let accesToken = generateToken(user);
+
+        const conection = await getConection();
+        const existe = await conection.query('SELECT id_empleado FROM empleados where nombre = ?',nombre);
+        console.log(existe[0].id_empleado);
+
+        if (existe.length > 0) {
+            let accesToken = generateToken(user);
+            
+            res.status(200).header('authorization',accesToken).json({
+                message: 'usuario autenticado',
+                token: accesToken,
+                id_empleado: existe[0].id_empleado
+            });
+            
+        }else{
+            res.json('no existe el usuario');
+        }
+
 
        
-        res.header('authorization',accesToken).json({
-            message: 'usuario autenticado',
-            token: accesToken
-        });
         
         
     } catch (error) {

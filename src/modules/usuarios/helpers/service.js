@@ -21,7 +21,7 @@ const validEmployee = (newUser, id_empleado = 0) => {
 }
 
 const generateToken = (user) => {
-    return jwt.sign(user, process.env.SECRET, { expiresIn: '10m' });
+    return jwt.sign(user, process.env.SECRET, { expiresIn: '30m' });
 }
 
 const validateToken = (req,res,next) => {
