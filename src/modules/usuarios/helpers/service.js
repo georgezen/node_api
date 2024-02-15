@@ -8,7 +8,7 @@ const validEmployee = (newUser, id_empleado = 0) => {
 
     if (isNaN(id_empleado)) {
         mensaje = "Inserte un id valido";
-    } 
+    }
 
     if (nombre === "") {
         mensaje = "Nombre requerido";
@@ -24,19 +24,28 @@ const generateToken = (user) => {
     return jwt.sign(user, process.env.SECRET, { expiresIn: '60m' });
 }
 
-const validateToken = (req,res,next) => {
-    const accesToken = req.headers.authorization.split(' ')[1];
-    console.log(accesToken);
-    if (!accesToken) res.send("Acceso denegado");
+const validateToken = (req, res, next) => {
 
-    jwt.verify(accesToken,process.env.SECRET,(err,user) => {
+
+    const sinToken = req.headers.authorization;
+    
+    if (sinToken === undefined) {
+        res.send("Acceso denegado,configure su token de acceso");
+    }
+    
+    const accesToken = req.headers.authorization.split(' ')[1];
+
+    jwt.verify(accesToken, process.env.SECRET, (err, user) => {
         if (err) {
-            console.log(err);
-            res.send("Acceso denegado,token expirado o incorrecto");
-        }else{
+            res.send("Token expirado o incorrecto");
+        } else {
             next();
         }
     });
+
+
+
+
 }
 
 

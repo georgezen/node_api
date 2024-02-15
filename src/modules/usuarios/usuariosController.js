@@ -55,7 +55,7 @@ const addUser = async (req, res) => {
         
         const conection = await getConection();
         const result = await conection.query('insert into empleados set ?', newUser);
-        res.status(201).json({message: "Empleado agregado"});
+        res.status(201).json({message: "Empleado agregado",result: result.insertId});
         
         
     } catch (error) {
@@ -127,7 +127,6 @@ const authUser = async (req, res) => {
 
         const conection = await getConection();
         const existe = await conection.query('SELECT id_empleado FROM empleados where nombre = ?',nombre);
-        console.log(existe[0].id_empleado);
 
         if (existe.length > 0) {
             let accesToken = generateToken(user);
@@ -139,7 +138,7 @@ const authUser = async (req, res) => {
             });
             
         }else{
-            res.json('no existe el usuario');
+            res.json(`No existe el usuario ${nombre} en la base de datos`);
         }
 
 
