@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
 const routerUsuarios = require('./modules/usuarios/routeUsuarios');
+const routerContactos = require('./modules/contactos/routeContacts');
 require('dotenv').config();
 
 const app = express();
@@ -18,6 +19,7 @@ app.use(express.json());
 
 //exportado de rutas de la carpeta routes
 app.use(routerUsuarios);
+app.use(routerContactos);
 
 // Exportado del aplicativo general
 module.exports = {
